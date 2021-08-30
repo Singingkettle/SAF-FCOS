@@ -83,8 +83,14 @@ python tools/nuscenes/extract_pc_image_norm_info_from_image.py --datadir ~/Data/
    The detection results are saved as '0, 1479.519, 611.043, 1598.754, 849.447'. The first column is category, and the
    last stands for position.  
    For convenience, we supply our generated 2D txt files in cloud drive.  
-   For users not in China, please download from [google drive](https://drive.google.com/file/d/12SXDFUWpTPUKaWTn8yuoG-_CHaXVVGB7/view?usp=sharing).  
-   For users in China, please download from [baidu drive]().  
+   For users not in China, please download
+   from [google drive](https://drive.google.com/file/d/12SXDFUWpTPUKaWTn8yuoG-_CHaXVVGB7/view?usp=sharing).  
+   For users in China, please download from [baidu drive](https://pan.baidu.com/s/11NNYpmBbs5sSqSsFxl-z7Q).
+   ```shell
+   链接：https://pan.baidu.com/s/11NNYpmBbs5sSqSsFxl-z7Q 
+   提取码：6f1x 
+   ```
+
    If you use our generated txt files, please:
 
 ```shell
@@ -126,4 +132,28 @@ python -m torch.distributed.launch \
        --config-file configs/fcos_nuscenes/fcos_imprv_R_101_FPN_1x_ATTMIX_135_Circle_07.yaml \
        --checkpoint-file tmp/fcos_imprv_R_50_FPN_1x_ATTMIX_135_Circle_07/model_0010000.pth \ 
        OUTPUT_DIR tmp/fcos_imprv_R_101_FPN_1x_ATTMIX_135_Circle_07
+```
+
+## Citations
+
+Please consider citing our paper and FOCS in your publications if the project helps your research. BibTeX reference is
+as follows.
+
+```
+@article{chang2020spatial,
+  title={Spatial Attention fusion for obstacle detection using mmwave radar and vision sensor},
+  author={Chang, Shuo and Zhang, Yifan and Zhang, Fan and Zhao, Xiaotong and Huang, Sai and Feng, Zhiyong and Wei, Zhiqing},
+  journal={Sensors},
+  volume={20},
+  number={4},
+  pages={956},
+  year={2020},
+  publisher={Multidisciplinary Digital Publishing Institute}
+}
+@inproceedings{tian2019fcos,
+  title   =  {{FCOS}: Fully Convolutional One-Stage Object Detection},
+  author  =  {Tian, Zhi and Shen, Chunhua and Chen, Hao and He, Tong},
+  booktitle =  {Proc. Int. Conf. Computer Vision (ICCV)},
+  year    =  {2019}
+}
 ```
