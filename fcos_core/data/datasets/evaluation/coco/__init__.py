@@ -2,13 +2,13 @@ from .coco_eval import do_coco_evaluation
 
 
 def coco_evaluation(
-    dataset,
-    predictions,
-    output_folder,
-    box_only,
-    iou_types,
-    expected_results,
-    expected_results_sigma_tol,
+        dataset,
+        predictions,
+        output_folder,
+        box_only,
+        iou_types,
+        expected_results,
+        expected_results_sigma_tol,
 ):
     return do_coco_evaluation(
         dataset=dataset,

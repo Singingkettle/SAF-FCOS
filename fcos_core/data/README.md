@@ -1,10 +1,11 @@
 # Setting Up Datasets
+
 This file describes how to perform training on other datasets.
 
 Only Pascal VOC dataset can be loaded from its original format and be outputted to Pascal style results currently.
 
-We expect the annotations from other datasets be converted to COCO json format, and
-the output will be in COCO-style. (i.e. AP, AP50, AP75, APs, APm, APl for bbox and segm)
+We expect the annotations from other datasets be converted to COCO json format, and the output will be in COCO-style. (
+i.e. AP, AP50, AP75, APs, APm, APl for bbox and segm)
 
 ## Creating Symlinks for PASCAL VOC
 
@@ -33,10 +34,14 @@ cd ~/github/maskrcnn-benchmark
 mkdir -p datasets/voc/VOC<year>
 ln -s /path/to/VOC<year> /datasets/voc/VOC<year>
 ```
-Example configuration files for PASCAL VOC could be found [here](https://github.com/facebookresearch/maskrcnn-benchmark/blob/master/configs/pascal_voc/).
+
+Example configuration files for PASCAL VOC could be
+found [here](https://github.com/facebookresearch/maskrcnn-benchmark/blob/master/configs/pascal_voc/).
 
 ### PASCAL VOC Annotations in COCO Format
-To output COCO-style evaluation result, PASCAL VOC annotations in COCO json format is required and could be downloaded from [here](https://storage.googleapis.com/coco-dataset/external/PASCAL_VOC.zip)
+
+To output COCO-style evaluation result, PASCAL VOC annotations in COCO json format is required and could be downloaded
+from [here](https://storage.googleapis.com/coco-dataset/external/PASCAL_VOC.zip)
 via http://cocodataset.org/#external.
 
 ## Creating Symlinks for Cityscapes:
@@ -67,14 +72,17 @@ ln -s /path/to/cityscapes datasets/data/cityscapes
 ```
 
 ### Steps to convert Cityscapes Annotations to COCO Format
+
 1. Download gtFine_trainvaltest.zip from https://www.cityscapes-dataset.com/downloads/ (login required)
 2. Extract it to /path/to/gtFine_trainvaltest
+
 ```
 cityscapes
 |_ gtFine_trainvaltest.zip
 |_ gtFine_trainvaltest
    |_ gtFine
 ```
+
 3. Run the below commands to convert the annotations
 
 ```
@@ -87,4 +95,5 @@ cd ~/github/maskrcnn-benchmark
 python tools/cityscapes/convert_cityscapes_to_coco.py --datadir /path/to/cityscapes --outdir /path/to/cityscapes/annotations
 ```
 
-Example configuration files for Cityscapes could be found [here](https://github.com/facebookresearch/maskrcnn-benchmark/blob/master/configs/cityscapes/).
+Example configuration files for Cityscapes could be
+found [here](https://github.com/facebookresearch/maskrcnn-benchmark/blob/master/configs/cityscapes/).
