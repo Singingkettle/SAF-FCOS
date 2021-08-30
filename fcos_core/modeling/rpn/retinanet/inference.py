@@ -1,14 +1,12 @@
 import torch
 
+from fcos_core.modeling.box_coder import BoxCoder
+from fcos_core.structures.bounding_box import BoxList
+from fcos_core.structures.boxlist_ops import boxlist_nms
+from fcos_core.structures.boxlist_ops import cat_boxlist
+from fcos_core.structures.boxlist_ops import remove_small_boxes
 from ..inference import RPNPostProcessor
 from ..utils import permute_and_flatten
-
-from fcos_core.modeling.box_coder import BoxCoder
-from fcos_core.modeling.utils import cat
-from fcos_core.structures.bounding_box import BoxList
-from fcos_core.structures.boxlist_ops import cat_boxlist
-from fcos_core.structures.boxlist_ops import boxlist_nms
-from fcos_core.structures.boxlist_ops import remove_small_boxes
 
 
 class RetinaNetPostProcessor(RPNPostProcessor):
@@ -16,15 +14,16 @@ class RetinaNetPostProcessor(RPNPostProcessor):
     Performs post-processing on the outputs of the RetinaNet boxes.
     This is only used in the testing.
     """
+
     def __init__(
-        self,
-        pre_nms_thresh,
-        pre_nms_top_n,
-        nms_thresh,
-        fpn_post_nms_top_n,
-        min_size,
-        num_classes,
-        box_coder=None,
+            self,
+            pre_nms_thresh,
+            pre_nms_top_n,
+            nms_thresh,
+            fpn_post_nms_top_n,
+            min_size,
+            num_classes,
+            box_coder=None,
     ):
         """
         Arguments:
@@ -49,7 +48,7 @@ class RetinaNetPostProcessor(RPNPostProcessor):
         if box_coder is None:
             box_coder = BoxCoder(weights=(10., 10., 5., 5.))
         self.box_coder = box_coder
- 
+
     def add_gt_proposals(self, proposals, targets):
         """
         This function is not used in RetinaNet
@@ -85,13 +84,12 @@ class RetinaNetPostProcessor(RPNPostProcessor):
 
         results = []
         for per_box_cls, per_box_regression, per_pre_nms_top_n, \
-        per_candidate_inds, per_anchors in zip(
+            per_candidate_inds, per_anchors in zip(
             box_cls,
             box_regression,
             pre_nms_top_n,
             candidate_inds,
             anchors):
-
             # Sort and select TopN
             # TODO most of this can be made out of the loop for
             # all images. 
@@ -99,12 +97,12 @@ class RetinaNetPostProcessor(RPNPostProcessor):
             # different in each image. Therefore, this part needs to be done
             # per image. 
             per_box_cls = per_box_cls[per_candidate_inds]
- 
+
             per_box_cls, top_k_indices = \
-                    per_box_cls.topk(per_pre_nms_top_n, sorted=False)
+                per_box_cls.topk(per_pre_nms_top_n, sorted=False)
 
             per_candidate_nonzeros = \
-                    per_candidate_inds.nonzero()[top_k_indices, :]
+                per_candidate_inds.nonzero()[top_k_indices, :]
 
             per_box_loc = per_candidate_nonzeros[:, 0]
             per_class = per_candidate_nonzeros[:, 1]

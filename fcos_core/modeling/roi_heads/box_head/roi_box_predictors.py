@@ -1,6 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
-from fcos_core.modeling import registry
 from torch import nn
+
+from fcos_core.modeling import registry
 
 
 @registry.ROI_BOX_PREDICTOR.register("FastRCNNPredictor")

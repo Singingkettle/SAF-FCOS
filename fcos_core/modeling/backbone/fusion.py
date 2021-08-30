@@ -1,8 +1,7 @@
 import torch
 from torch import nn
+
 from fcos_core.layers import Conv2d
-import fcos_core.config.globalvar as gl
-import numpy as np
 
 
 class ATTBlock(nn.Module):
@@ -142,7 +141,4 @@ class FusionAttMix(nn.Module):
     def forward(self, im_x, ra_x):
         ra_x = self.att(ra_x)
         x = torch.mul(im_x, ra_x)
-        attention_map_path = gl.get_value('path')
-        np_ra_x = ra_x.data.cpu().numpy().squeeze()
-        np.savetxt(attention_map_path, np_ra_x)
         return x

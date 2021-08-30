@@ -1,10 +1,9 @@
 from torch import nn
 from torch.nn import functional as F
 
+from fcos_core.layers import Conv2d
 from fcos_core.modeling import registry
 from fcos_core.modeling.poolers import Pooler
-
-from fcos_core.layers import Conv2d
 
 
 @registry.ROI_KEYPOINT_FEATURE_EXTRACTORS.register("KeypointRCNNFeatureExtractor")

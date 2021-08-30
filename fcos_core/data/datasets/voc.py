@@ -1,9 +1,9 @@
 import os
+import sys
 
 import torch
 import torch.utils.data
 from PIL import Image
-import sys
 
 if sys.version_info[0] == 2:
     import xml.etree.cElementTree as ET

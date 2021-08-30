@@ -1,8 +1,9 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 import copy
-import numpy as np
 from enum import Enum, unique
 from typing import Iterator, List, Tuple, Union
+
+import numpy as np
 import torch
 
 _RawBoxType = Union[List[float], Tuple[float, ...], torch.Tensor, np.ndarray]

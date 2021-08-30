@@ -1,15 +1,12 @@
-import cv2
 import copy
-import torch
-import numpy as np
-from fcos_core.layers.misc import interpolate
 
+import cv2
 import pycocotools.mask as mask_utils
+import torch
 
 # transpose
 FLIP_LEFT_RIGHT = 0
 FLIP_TOP_BOTTOM = 1
-
 
 """ ABSTRACT
 Segmentations come in either:
@@ -415,7 +412,7 @@ class PolygonList(object):
             # advanced indexing on a single dimension
             selected_polygons = []
             if isinstance(item, torch.Tensor) and \
-               item.dtype == torch.uint8 or item.dtype == torch.bool:
+                    item.dtype == torch.uint8 or item.dtype == torch.bool:
                 item = item.nonzero()
                 item = item.squeeze(1) if item.numel() > 0 else item
                 item = item.tolist()
@@ -435,7 +432,6 @@ class PolygonList(object):
 
 
 class SegmentationMask(object):
-
     """
     This class stores the segmentations for all objects in the image.
     It wraps BinaryMaskList and PolygonList conveniently.
@@ -524,7 +520,7 @@ class SegmentationMask(object):
             self.iter_idx += 1
             return next_segmentation
         raise StopIteration()
-        
+
     next = __next__  # Python 2 compatibility
 
     def __repr__(self):

@@ -3,13 +3,13 @@ import torch
 from torch.nn import functional as F
 
 from fcos_core.layers import smooth_l1_loss
-from fcos_core.modeling.box_coder import BoxCoder
-from fcos_core.modeling.matcher import Matcher
-from fcos_core.structures.boxlist_ops import boxlist_iou
 from fcos_core.modeling.balanced_positive_negative_sampler import (
     BalancedPositiveNegativeSampler
 )
+from fcos_core.modeling.box_coder import BoxCoder
+from fcos_core.modeling.matcher import Matcher
 from fcos_core.modeling.utils import cat
+from fcos_core.structures.boxlist_ops import boxlist_iou
 
 
 class FastRCNNLossComputation(object):
@@ -19,11 +19,11 @@ class FastRCNNLossComputation(object):
     """
 
     def __init__(
-        self, 
-        proposal_matcher, 
-        fg_bg_sampler, 
-        box_coder, 
-        cls_agnostic_bbox_reg=False
+            self,
+            proposal_matcher,
+            fg_bg_sampler,
+            box_coder,
+            cls_agnostic_bbox_reg=False
     ):
         """
         Arguments:
@@ -96,7 +96,7 @@ class FastRCNNLossComputation(object):
         proposals = list(proposals)
         # add corresponding label and regression_targets information to the bounding boxes
         for labels_per_image, regression_targets_per_image, proposals_per_image in zip(
-            labels, regression_targets, proposals
+                labels, regression_targets, proposals
         ):
             proposals_per_image.add_field("labels", labels_per_image)
             proposals_per_image.add_field(
@@ -106,7 +106,7 @@ class FastRCNNLossComputation(object):
         # distributed sampled proposals, that were obtained on all feature maps
         # concatenated via the fg_bg_sampler, into individual feature map levels
         for img_idx, (pos_inds_img, neg_inds_img) in enumerate(
-            zip(sampled_pos_inds, sampled_neg_inds)
+                zip(sampled_pos_inds, sampled_neg_inds)
         ):
             img_sampled_inds = torch.nonzero(pos_inds_img | neg_inds_img).squeeze(1)
             proposals_per_image = proposals[img_idx][img_sampled_inds]
@@ -184,9 +184,9 @@ def make_roi_box_loss_evaluator(cfg):
     cls_agnostic_bbox_reg = cfg.MODEL.CLS_AGNOSTIC_BBOX_REG
 
     loss_evaluator = FastRCNNLossComputation(
-        matcher, 
-        fg_bg_sampler, 
-        box_coder, 
+        matcher,
+        fg_bg_sampler,
+        box_coder,
         cls_agnostic_bbox_reg
     )
 

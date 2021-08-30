@@ -3,9 +3,9 @@ import torchvision.transforms as TT
 
 from fcos_core.config import cfg
 from fcos_core.data import transforms as T
-from fcos_core.structures.image_list import to_image_list
-from fcos_core.structures.bounding_box import BoxList
 from fcos_core.modeling.rpn.fcos.inference import make_fcos_postprocessor
+from fcos_core.structures.bounding_box import BoxList
+from fcos_core.structures.image_list import to_image_list
 
 
 def im_detect_bbox_aug(model, images, device):

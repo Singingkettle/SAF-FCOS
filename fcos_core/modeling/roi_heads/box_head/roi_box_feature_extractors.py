@@ -5,9 +5,9 @@ from torch.nn import functional as F
 
 from fcos_core.modeling import registry
 from fcos_core.modeling.backbone import resnet
-from fcos_core.modeling.poolers import Pooler
 from fcos_core.modeling.make_layers import group_norm
 from fcos_core.modeling.make_layers import make_fc
+from fcos_core.modeling.poolers import Pooler
 
 
 @registry.ROI_BOX_FEATURE_EXTRACTORS.register("ResNet50Conv5ROIFeatureExtractor")
@@ -124,7 +124,7 @@ class FPNXconv1fcFeatureExtractor(nn.Module):
             xconvs.append(nn.ReLU(inplace=True))
 
         self.add_module("xconvs", nn.Sequential(*xconvs))
-        for modules in [self.xconvs,]:
+        for modules in [self.xconvs, ]:
             for l in modules.modules():
                 if isinstance(l, nn.Conv2d):
                     torch.nn.init.normal_(l.weight, std=0.01)

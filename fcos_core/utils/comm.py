@@ -4,7 +4,6 @@ This is useful when doing distributed training.
 """
 
 import pickle
-import time
 
 import torch
 import torch.distributed as dist

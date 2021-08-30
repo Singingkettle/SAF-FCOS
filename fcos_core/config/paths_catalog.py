@@ -5,38 +5,6 @@ import os
 
 
 class DatasetCatalog(object):
-    # DATASETS = {
-    #     "nuscenes_train_cocostyle": {
-    #         "img_dir": "/home/citybuster/Data/nuScenes",
-    #         "ann_file": "/home/citybuster/Data/nuScenes/v1.0-trainval/coco_train.json"
-    #     },
-    #     "nuscenes_val_cocostyle": {
-    #         "img_dir": "/home/citybuster/Data/nuScenes",
-    #         "ann_file": "/home/citybuster/Data/nuScenes/v1.0-trainval/coco_testval.json"
-    #     },
-    #     "nuscenes_test_cocostyle": {
-    #         "img_dir": "/home/citybuster/Data/nuScenes",
-    #         "ann_file": "/home/citybuster/Data/nuScenes/v1.0-trainval/coco_testval.json"
-    #     }
-    # }
-
-    # # test
-    # DATASETS = {
-    #     "nuscenes_train_cocostyle": {
-    #         "img_dir": "/home/citybuster/Data/nuScenes",
-    #         "ann_file": "/home/citybuster/Data/nuScenes/v1.0-trainval/gt_fcos_coco_train.json"
-    #     },
-    #     "nuscenes_val_cocostyle": {
-    #         "img_dir": "/home/citybuster/Data/nuScenes",
-    #         "ann_file": "/home/citybuster/Data/nuScenes/v1.0-trainval/gt_fcos_coco_val_v2.json"
-    #     },
-    #     "nuscenes_test_cocostyle": {
-    #         "img_dir": "/home/citybuster/Data/nuScenes",
-    #         "ann_file": "/home/citybuster/Data/nuScenes/v1.0-trainval/gt_fcos_coco_test_v2.json"
-    #     }
-    # }
-
-    # validate
     DATASETS = {
         "nuscenes_train_cocostyle": {
             "img_dir": "/home/citybuster/Data/nuScenes",
@@ -44,11 +12,11 @@ class DatasetCatalog(object):
         },
         "nuscenes_val_cocostyle": {
             "img_dir": "/home/citybuster/Data/nuScenes",
-            "ann_file": "/home/citybuster/Data/nuScenes/v1.0-trainval/gt_fcos_coco_val_v2.json"
+            "ann_file": "/home/citybuster/Data/nuScenes/v1.0-trainval/gt_fcos_coco_val.json"
         },
         "nuscenes_test_cocostyle": {
             "img_dir": "/home/citybuster/Data/nuScenes",
-            "ann_file": "/home/citybuster/Data/nuScenes/v1.0-trainval/gt_fcos_coco_val_v2.json"
+            "ann_file": "/home/citybuster/Data/nuScenes/v1.0-trainval/gt_fcos_coco_val.json"
         }
     }
 

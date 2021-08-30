@@ -1,12 +1,14 @@
-import cv2, os
-import torch
-from fcos_core.config import cfg as base_cfg
-from torchvision import transforms as T
-from fcos_core.modeling.detector import build_detection_model
-from fcos_core.utils.checkpoint import DetectronCheckpointer
-from fcos_core.structures.image_list import to_image_list
-from fcos_core.structures.bounding_box import BoxList
+import os
 
+import cv2
+import torch
+from torchvision import transforms as T
+
+from fcos_core.config import cfg as base_cfg
+from fcos_core.modeling.detector import build_detection_model
+from fcos_core.structures.bounding_box import BoxList
+from fcos_core.structures.image_list import to_image_list
+from fcos_core.utils.checkpoint import DetectronCheckpointer
 
 _MODEL_NAMES_TO_INFO_ = {
     "fcos_R_50_FPN_1x": {

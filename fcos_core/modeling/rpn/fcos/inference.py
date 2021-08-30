@@ -1,13 +1,9 @@
 import torch
 
-from ..inference import RPNPostProcessor
-from ..utils import permute_and_flatten
-
 from fcos_core.modeling.box_coder import BoxCoder
-from fcos_core.modeling.utils import cat
 from fcos_core.structures.bounding_box import BoxList
-from fcos_core.structures.boxlist_ops import cat_boxlist
 from fcos_core.structures.boxlist_ops import boxlist_ml_nms
+from fcos_core.structures.boxlist_ops import cat_boxlist
 from fcos_core.structures.boxlist_ops import remove_small_boxes
 
 
@@ -16,15 +12,16 @@ class FCOSPostProcessor(torch.nn.Module):
     Performs post-processing on the outputs of the RetinaNet boxes.
     This is only used in the testing.
     """
+
     def __init__(
-        self,
-        pre_nms_thresh,
-        pre_nms_top_n,
-        nms_thresh,
-        fpn_post_nms_top_n,
-        min_size,
-        num_classes,
-        bbox_aug_enabled=False
+            self,
+            pre_nms_thresh,
+            pre_nms_top_n,
+            nms_thresh,
+            fpn_post_nms_top_n,
+            min_size,
+            num_classes,
+            bbox_aug_enabled=False
     ):
         """
         Arguments:

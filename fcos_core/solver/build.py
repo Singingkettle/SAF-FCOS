@@ -1,6 +1,8 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
-import torch
 import logging
+
+import torch
+
 from .lr_scheduler import WarmupMultiStepLR
 
 

@@ -3,14 +3,12 @@
 Implements the Generalized R-CNN framework
 """
 
-import torch
 from torch import nn
 
 from fcos_core.structures.image_list import to_image_list
-
 from ..backbone import build_backbone
-from ..rpn.rpn import build_rpn
 from ..roi_heads.roi_heads import build_roi_heads
+from ..rpn.rpn import build_rpn
 
 
 class GeneralizedRCNN(nn.Module):

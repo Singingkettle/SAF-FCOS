@@ -1,13 +1,11 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 import torch
-from torch import nn
 
 from fcos_core.structures.bounding_box import BoxList
-
-from .roi_mask_feature_extractors import make_roi_mask_feature_extractor
-from .roi_mask_predictors import make_roi_mask_predictor
 from .inference import make_roi_mask_post_processor
 from .loss import make_roi_mask_loss_evaluator
+from .roi_mask_feature_extractors import make_roi_mask_feature_extractor
+from .roi_mask_predictors import make_roi_mask_predictor
 
 
 def keep_only_positive_boxes(boxes):

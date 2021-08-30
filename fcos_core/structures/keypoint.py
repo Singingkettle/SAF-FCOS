@@ -1,9 +1,9 @@
 import torch
 
-
 # transpose
 FLIP_LEFT_RIGHT = 0
 FLIP_TOP_BOTTOM = 1
+
 
 class Keypoints(object):
     def __init__(self, keypoints, size, mode=None):
@@ -14,10 +14,10 @@ class Keypoints(object):
         num_keypoints = keypoints.shape[0]
         if num_keypoints:
             keypoints = keypoints.view(num_keypoints, -1, 3)
-        
+
         # TODO should I split them?
         # self.visibility = keypoints[..., 2]
-        self.keypoints = keypoints# [..., :2]
+        self.keypoints = keypoints  # [..., :2]
 
         self.size = size
         self.mode = mode
@@ -40,7 +40,7 @@ class Keypoints(object):
     def transpose(self, method):
         if method not in (FLIP_LEFT_RIGHT,):
             raise NotImplementedError(
-                    "Only FLIP_LEFT_RIGHT implemented")
+                "Only FLIP_LEFT_RIGHT implemented")
 
         flip_inds = type(self).FLIP_INDS
         flipped_data = self.keypoints[:, flip_inds]
@@ -128,6 +128,8 @@ class PersonKeypoints(Keypoints):
 
 # TODO this doesn't look great
 PersonKeypoints.FLIP_INDS = _create_flip_indices(PersonKeypoints.NAMES, PersonKeypoints.FLIP_MAP)
+
+
 def kp_connections(keypoints):
     kp_lines = [
         [keypoints.index('left_eye'), keypoints.index('right_eye')],
@@ -147,6 +149,8 @@ def kp_connections(keypoints):
         [keypoints.index('right_hip'), keypoints.index('left_hip')],
     ]
     return kp_lines
+
+
 PersonKeypoints.CONNECTIONS = kp_connections(PersonKeypoints.NAMES)
 
 
@@ -174,7 +178,7 @@ def keypoints_to_heat_map(keypoints, rois, heatmap_size):
     x = x.floor().long()
     y = (y - offset_y) * scale_y
     y = y.floor().long()
-    
+
     x[x_boundary_inds] = heatmap_size - 1
     y[y_boundary_inds] = heatmap_size - 1
 

@@ -1,14 +1,14 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 import argparse
-import cv2, os
+import json
+import os
+from shutil import copyfile
+
+import fcos_core.config.globalvar as gl
+from tqdm import tqdm
 
 from fcos_core.config import cfg
 from predictor import NuScenesDemo
-import json
-import time
-import fcos_core.config.globalvar as gl
-from tqdm import tqdm
-from shutil import copyfile
 
 
 def main():

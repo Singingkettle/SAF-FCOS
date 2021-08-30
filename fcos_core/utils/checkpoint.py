@@ -4,21 +4,21 @@ import os
 
 import torch
 
-from fcos_core.utils.model_serialization import load_state_dict
 from fcos_core.utils.c2_model_loading import load_c2_format
 from fcos_core.utils.imports import import_file
+from fcos_core.utils.model_serialization import load_state_dict
 from fcos_core.utils.model_zoo import cache_url
 
 
 class Checkpointer(object):
     def __init__(
-        self,
-        model,
-        optimizer=None,
-        scheduler=None,
-        save_dir="",
-        save_to_disk=None,
-        logger=None,
+            self,
+            model,
+            optimizer=None,
+            scheduler=None,
+            save_dir="",
+            save_to_disk=None,
+            logger=None,
     ):
         self.model = model
         self.optimizer = optimizer
@@ -100,14 +100,14 @@ class Checkpointer(object):
 
 class DetectronCheckpointer(Checkpointer):
     def __init__(
-        self,
-        cfg,
-        model,
-        optimizer=None,
-        scheduler=None,
-        save_dir="",
-        save_to_disk=None,
-        logger=None,
+            self,
+            cfg,
+            model,
+            optimizer=None,
+            scheduler=None,
+            save_dir="",
+            save_to_disk=None,
+            logger=None,
     ):
         super(DetectronCheckpointer, self).__init__(
             model, optimizer, scheduler, save_dir, save_to_disk, logger
@@ -120,7 +120,7 @@ class DetectronCheckpointer(Checkpointer):
             paths_catalog = import_file(
                 "fcos_core.config.paths_catalog", self.cfg.PATHS_CATALOG, True
             )
-            catalog_f = paths_catalog.ModelCatalog.get(f[len("catalog://") :])
+            catalog_f = paths_catalog.ModelCatalog.get(f[len("catalog://"):])
             self.logger.info("{} points to {}".format(f, catalog_f))
             f = catalog_f
         # download url files

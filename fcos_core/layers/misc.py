@@ -10,6 +10,7 @@ is implemented
 """
 
 import math
+
 import torch
 from torch.nn.modules.utils import _ntuple
 
@@ -73,7 +74,7 @@ class BatchNorm2d(torch.nn.BatchNorm2d):
 
 
 def interpolate(
-    input, size=None, scale_factor=None, mode="nearest", align_corners=None
+        input, size=None, scale_factor=None, mode="nearest", align_corners=None
 ):
     if input.numel() > 0:
         return torch.nn.functional.interpolate(
@@ -86,9 +87,9 @@ def interpolate(
         if size is not None and scale_factor is not None:
             raise ValueError("only one of size or scale_factor should be defined")
         if (
-            scale_factor is not None
-            and isinstance(scale_factor, tuple)
-            and len(scale_factor) != dim
+                scale_factor is not None
+                and isinstance(scale_factor, tuple)
+                and len(scale_factor) != dim
         ):
             raise ValueError(
                 "scale_factor shape must match input shape. "
@@ -112,18 +113,19 @@ def interpolate(
 
 class DFConv2d(torch.nn.Module):
     """Deformable convolutional layer"""
+
     def __init__(
-        self,
-        in_channels,
-        out_channels,
-        with_modulated_dcn=True,
-        kernel_size=3,
-        stride=1,
-        groups=1,
-        padding=1,
-        dilation=1,
-        deformable_groups=1,
-        bias=False
+            self,
+            in_channels,
+            out_channels,
+            with_modulated_dcn=True,
+            kernel_size=3,
+            stride=1,
+            groups=1,
+            padding=1,
+            dilation=1,
+            deformable_groups=1,
+            bias=False
     ):
         super(DFConv2d, self).__init__()
         if isinstance(kernel_size, (list, tuple)):

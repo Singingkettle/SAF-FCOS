@@ -1,10 +1,8 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 import torch
-import torch.nn.functional as F
 from torch import nn
 
 from fcos_core.layers import ROIAlign
-
 from .utils import cat
 
 

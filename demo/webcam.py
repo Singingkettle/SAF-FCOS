@@ -1,11 +1,11 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 import argparse
+import time
+
 import cv2
 
 from fcos_core.config import cfg
 from predictor import COCODemo
-
-import time
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
         type=int,
         default=224,
         help="Smallest size of the image to feed to the model. "
-            "Model was trained with 800, which gives best results",
+             "Model was trained with 800, which gives best results",
     )
     parser.add_argument(
         "--show-mask-heatmaps",

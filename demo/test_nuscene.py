@@ -1,11 +1,12 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 import argparse
-import cv2, os
+import os
+
+import cv2
+from tqdm import tqdm
 
 from fcos_core.config import cfg
 from predictor import COCODemo
-from tqdm import tqdm
-import time
 
 VEHICLES = ['bicycle', 'car', 'motorcycle', 'bus', 'train', 'truck']
 

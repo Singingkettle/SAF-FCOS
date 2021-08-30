@@ -1,12 +1,11 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 # Set up custom environment before nearly anything else is imported
 # NOTE: this should be the first import (no not reorder)
-from fcos_core.utils.env import setup_environment  # noqa F401 isort:skip
-
 import argparse
 import os
 
 import torch
+
 from fcos_core.config import cfg
 from fcos_core.data import make_data_loader
 from fcos_core.engine.inference import inference
@@ -14,6 +13,7 @@ from fcos_core.modeling.detector import build_detection_model
 from fcos_core.utils.checkpoint import DetectronCheckpointer
 from fcos_core.utils.collect_env import collect_env_info
 from fcos_core.utils.comm import synchronize, get_rank
+from fcos_core.utils.env import setup_environment  # noqa F401 isort:skip
 from fcos_core.utils.logger import setup_logger
 from fcos_core.utils.miscellaneous import mkdir
 
@@ -22,7 +22,13 @@ def main():
     parser = argparse.ArgumentParser(description="PyTorch Object Detection Inference")
     parser.add_argument(
         "--config-file",
-        default="/private/home/fmassa/github/detectron.pytorch_v2/configs/e2e_faster_rcnn_R_50_C4_1x_caffe2.yaml",
+        default="configs/fcos_nuscenes/fcos_imprv_R_50_FPN_1x_ATTMIX_135_Circle_07.yaml",
+        metavar="FILE",
+        help="path to config file",
+    )
+    parser.add_argument(
+        "--checkpoint-file",
+        default="tmp/fcos_imprv_R_50_FPN_1x_ATTMIX_135_Circle_07/model_0010000.pth",
         metavar="FILE",
         help="path to config file",
     )
@@ -50,8 +56,8 @@ def main():
     cfg.merge_from_list(args.opts)
     cfg.freeze()
 
-    save_dir = ""
-    logger = setup_logger("fcos_core", save_dir, get_rank())
+    save_dir = cfg.OUTPUT_DIR
+    logger = setup_logger("fcos_core", save_dir, get_rank(), filename="test_all.txt")
     logger.info("Using {} GPUs".format(num_gpus))
     logger.info(cfg)
 
@@ -61,9 +67,9 @@ def main():
     model = build_detection_model(cfg)
     model.to(cfg.MODEL.DEVICE)
 
-    output_dir = cfg.OUTPUT_DIR
-    checkpointer = DetectronCheckpointer(cfg, model, save_dir=output_dir)
-    _ = checkpointer.load(cfg.MODEL.WEIGHT)
+    checkpointer = DetectronCheckpointer(cfg, model)
+    model_name = args.checkpointer_file.split('/')[-1]
+    _ = checkpointer.load(args.checkpointer_file)
 
     iou_types = ("bbox",)
     if cfg.MODEL.MASK_ON:
@@ -74,7 +80,7 @@ def main():
     dataset_names = cfg.DATASETS.TEST
     if cfg.OUTPUT_DIR:
         for idx, dataset_name in enumerate(dataset_names):
-            output_folder = os.path.join(cfg.OUTPUT_DIR, "inference", dataset_name)
+            output_folder = os.path.join(cfg.OUTPUT_DIR, "inference-" + model_name, dataset_name)
             mkdir(output_folder)
             output_folders[idx] = output_folder
     data_loaders_val = make_data_loader(cfg, is_train=False, is_distributed=distributed)

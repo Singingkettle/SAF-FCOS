@@ -1,5 +1,4 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
-import math
 
 import numpy as np
 import torch
@@ -38,11 +37,11 @@ class AnchorGenerator(nn.Module):
     """
 
     def __init__(
-        self,
-        sizes=(128, 256, 512),
-        aspect_ratios=(0.5, 1.0, 2.0),
-        anchor_strides=(8, 16, 32),
-        straddle_thresh=0,
+            self,
+            sizes=(128, 256, 512),
+            aspect_ratios=(0.5, 1.0, 2.0),
+            anchor_strides=(8, 16, 32),
+            straddle_thresh=0,
     ):
         super(AnchorGenerator, self).__init__()
 
@@ -73,7 +72,7 @@ class AnchorGenerator(nn.Module):
     def grid_anchors(self, grid_sizes):
         anchors = []
         for size, stride, base_anchors in zip(
-            grid_sizes, self.strides, self.cell_anchors
+                grid_sizes, self.strides, self.cell_anchors
         ):
             grid_height, grid_width = size
             device = base_anchors.device
@@ -99,10 +98,10 @@ class AnchorGenerator(nn.Module):
         anchors = boxlist.bbox
         if self.straddle_thresh >= 0:
             inds_inside = (
-                (anchors[..., 0] >= -self.straddle_thresh)
-                & (anchors[..., 1] >= -self.straddle_thresh)
-                & (anchors[..., 2] < image_width + self.straddle_thresh)
-                & (anchors[..., 3] < image_height + self.straddle_thresh)
+                    (anchors[..., 0] >= -self.straddle_thresh)
+                    & (anchors[..., 1] >= -self.straddle_thresh)
+                    & (anchors[..., 2] < image_width + self.straddle_thresh)
+                    & (anchors[..., 3] < image_height + self.straddle_thresh)
             )
         else:
             device = anchors.device
@@ -165,6 +164,7 @@ def make_anchor_generator_retinanet(config):
     )
     return anchor_generator
 
+
 # Copyright (c) 2017-present, Facebook, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -218,7 +218,7 @@ def make_anchor_generator_retinanet(config):
 
 
 def generate_anchors(
-    stride=16, sizes=(32, 64, 128, 256, 512), aspect_ratios=(0.5, 1, 2)
+        stride=16, sizes=(32, 64, 128, 256, 512), aspect_ratios=(0.5, 1, 2)
 ):
     """Generates a matrix of anchor boxes in (x1, y1, x2, y2) format. Anchors
     are centered on stride / 2, have (approximate) sqrt areas of the specified

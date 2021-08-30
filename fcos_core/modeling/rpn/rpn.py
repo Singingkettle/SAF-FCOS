@@ -5,11 +5,11 @@ from torch import nn
 
 from fcos_core.modeling import registry
 from fcos_core.modeling.box_coder import BoxCoder
-from fcos_core.modeling.rpn.retinanet.retinanet import build_retinanet
 from fcos_core.modeling.rpn.fcos.fcos import build_fcos
-from .loss import make_rpn_loss_evaluator
+from fcos_core.modeling.rpn.retinanet.retinanet import build_retinanet
 from .anchor_generator import make_anchor_generator
 from .inference import make_rpn_postprocessor
+from .loss import make_rpn_loss_evaluator
 
 
 class RPNHeadConvRegressor(nn.Module):

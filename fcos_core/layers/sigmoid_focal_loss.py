@@ -5,6 +5,7 @@ from torch.autograd.function import once_differentiable
 
 from fcos_core import _C
 
+
 # TODO: Use JIT to replace CUDA implementation in the future.
 class _SigmoidFocalLoss(Function):
     @staticmethod
@@ -43,7 +44,7 @@ def sigmoid_focal_loss_cpu(logits, targets, gamma, alpha):
     alpha = alpha[0]
     dtype = targets.dtype
     device = targets.device
-    class_range = torch.arange(1, num_classes+1, dtype=dtype, device=device).unsqueeze(0)
+    class_range = torch.arange(1, num_classes + 1, dtype=dtype, device=device).unsqueeze(0)
 
     t = targets.unsqueeze(1)
     p = torch.sigmoid(logits)

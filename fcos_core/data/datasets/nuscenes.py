@@ -1,13 +1,14 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
+import os
+
 import torch
 from PIL import Image
-import os
-from fcos_core.structures.bounding_box import BoxList
-from fcos_core.structures.segmentation_mask import SegmentationMask
-from fcos_core.structures.keypoint import PersonKeypoints
-from . import coco
-from fcos_core.config import cfg
 
+from fcos_core.config import cfg
+from fcos_core.structures.bounding_box import BoxList
+from fcos_core.structures.keypoint import PersonKeypoints
+from fcos_core.structures.segmentation_mask import SegmentationMask
+from . import coco
 
 min_keypoints_per_image = 10
 

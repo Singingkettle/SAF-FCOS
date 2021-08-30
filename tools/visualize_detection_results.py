@@ -106,8 +106,6 @@ if __name__ == "__main__":
 
     config_name = 'fcos_imprv_R_50_FPN_1x_IMG'
     json_file_path = '/home/citybuster/Projects/FCOS/training_dir/fcos_imprv_R_50_FPN_1x_IMG/inference-model_0090000.pth/nuscenes_test_cocostyle/bbox.json'
-    # json_file_path = '/home/citybuster/Projects/FCOS/training_dir/fcos_imprv_R_50_FPN_1x_ATTMIX_135_Circle_07' \
-    #                  '/inference-model_0037500.pth/nuscenes_test_cocostyle/bbox.json'
     with open(json_file_path, "r") as f:
         predictions = json.load(f)
     pred_by_image = defaultdict(list)

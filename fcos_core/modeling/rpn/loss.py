@@ -7,15 +7,12 @@ file
 import torch
 from torch.nn import functional as F
 
-from .utils import concat_box_prediction_layers
-
-from ..balanced_positive_negative_sampler import BalancedPositiveNegativeSampler
-from ..utils import cat
-
 from fcos_core.layers import smooth_l1_loss
 from fcos_core.modeling.matcher import Matcher
 from fcos_core.structures.boxlist_ops import boxlist_iou
 from fcos_core.structures.boxlist_ops import cat_boxlist
+from .utils import concat_box_prediction_layers
+from ..balanced_positive_negative_sampler import BalancedPositiveNegativeSampler
 
 
 class RPNLossComputation(object):
@@ -88,7 +85,6 @@ class RPNLossComputation(object):
 
         return labels, regression_targets
 
-
     def __call__(self, anchors, objectness, box_regression, targets):
         """
         Arguments:
@@ -110,7 +106,7 @@ class RPNLossComputation(object):
         sampled_inds = torch.cat([sampled_pos_inds, sampled_neg_inds], dim=0)
 
         objectness, box_regression = \
-                concat_box_prediction_layers(objectness, box_regression)
+            concat_box_prediction_layers(objectness, box_regression)
 
         objectness = objectness.squeeze()
 
@@ -129,6 +125,7 @@ class RPNLossComputation(object):
         )
 
         return objectness_loss, box_loss
+
 
 # This function should be overwritten in RetinaNet
 def generate_rpn_labels(matched_targets):

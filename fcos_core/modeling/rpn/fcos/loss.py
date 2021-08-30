@@ -3,18 +3,13 @@ This file contains specific functions for computing losses of FCOS
 file
 """
 
-import torch
-from torch.nn import functional as F
-from torch import nn
 import os
-from ..utils import concat_box_prediction_layers
+
+import torch
+from torch import nn
+
 from fcos_core.layers import IOULoss
 from fcos_core.layers import SigmoidFocalLoss
-from fcos_core.modeling.matcher import Matcher
-from fcos_core.modeling.utils import cat
-from fcos_core.structures.boxlist_ops import boxlist_iou
-from fcos_core.structures.boxlist_ops import cat_boxlist
-
 
 INF = 100000000
 
@@ -28,7 +23,7 @@ def reduce_sum(tensor):
         return tensor
     import torch.distributed as dist
     tensor = tensor.clone()
-    dist.all_reduce(tensor, op=dist.reduce_op.SUM)
+    dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
     return tensor
 
 
@@ -202,7 +197,7 @@ class FCOSLossComputation(object):
         left_right = reg_targets[:, [0, 2]]
         top_bottom = reg_targets[:, [1, 3]]
         centerness = (left_right.min(dim=-1)[0] / left_right.max(dim=-1)[0]) * \
-                      (top_bottom.min(dim=-1)[0] / top_bottom.max(dim=-1)[0])
+                     (top_bottom.min(dim=-1)[0] / top_bottom.max(dim=-1)[0])
         return torch.sqrt(centerness)
 
     def __call__(self, locations, box_cls, box_regression, centerness, targets):

@@ -3,12 +3,12 @@ import cv2
 import torch
 from torchvision import transforms as T
 
-from fcos_core.modeling.detector import build_detection_model
-from fcos_core.utils.checkpoint import DetectronCheckpointer
-from fcos_core.structures.image_list import to_image_list
-from fcos_core.modeling.roi_heads.mask_head.inference import Masker
 from fcos_core import layers as L
+from fcos_core.modeling.detector import build_detection_model
+from fcos_core.modeling.roi_heads.mask_head.inference import Masker
+from fcos_core.structures.image_list import to_image_list
 from fcos_core.utils import cv2_util
+from fcos_core.utils.checkpoint import DetectronCheckpointer
 
 
 class COCODemo(object):
@@ -98,12 +98,12 @@ class COCODemo(object):
     ]
 
     def __init__(
-        self,
-        cfg,
-        confidence_thresholds_for_classes,
-        show_mask_heatmaps=False,
-        masks_per_dim=2,
-        min_image_size=224,
+            self,
+            cfg,
+            confidence_thresholds_for_classes,
+            show_mask_heatmaps=False,
+            masks_per_dim=2,
+            min_image_size=224,
     ):
         self.cfg = cfg.clone()
         self.model = build_detection_model(cfg)

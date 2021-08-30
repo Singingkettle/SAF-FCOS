@@ -8,7 +8,6 @@ import torch
 from fcos_core.config import cfg as g_cfg
 from fcos_core.modeling import registry
 from utils import load_config
-from fcos_core.modeling.backbone import build_backbone
 
 # overwrite configs if specified, otherwise default config is used
 BACKBONE_CFGS = {

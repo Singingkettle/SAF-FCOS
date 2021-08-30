@@ -9,16 +9,16 @@ from fcos_core import _C
 class DeformConvFunction(Function):
     @staticmethod
     def forward(
-        ctx, 
-        input, 
-        offset, 
-        weight,
-        stride=1, 
-        padding=0, 
-        dilation=1, 
-        groups=1, 
-        deformable_groups=1, 
-        im2col_step=64
+            ctx,
+            input,
+            offset,
+            weight,
+            stride=1,
+            padding=0,
+            dilation=1,
+            groups=1,
+            deformable_groups=1,
+            im2col_step=64
     ):
         if input is not None and input.dim() != 4:
             raise ValueError(
@@ -46,21 +46,21 @@ class DeformConvFunction(Function):
             assert (input.shape[0] %
                     cur_im2col_step) == 0, 'im2col step must divide batchsize'
             _C.deform_conv_forward(
-                input, 
-                weight, 
-                offset, 
-                output, 
-                ctx.bufs_[0], 
+                input,
+                weight,
+                offset,
+                output,
+                ctx.bufs_[0],
                 ctx.bufs_[1],
-                weight.size(3), 
-                weight.size(2), 
-                ctx.stride[1], 
+                weight.size(3),
+                weight.size(2),
+                ctx.stride[1],
                 ctx.stride[0],
-                ctx.padding[1], 
-                ctx.padding[0], 
+                ctx.padding[1],
+                ctx.padding[0],
                 ctx.dilation[1],
-                ctx.dilation[0], 
-                ctx.groups, 
+                ctx.dilation[0],
+                ctx.groups,
                 ctx.deformable_groups,
                 cur_im2col_step
             )
@@ -84,22 +84,22 @@ class DeformConvFunction(Function):
                 grad_input = torch.zeros_like(input)
                 grad_offset = torch.zeros_like(offset)
                 _C.deform_conv_backward_input(
-                    input, 
-                    offset, 
-                    grad_output, 
+                    input,
+                    offset,
+                    grad_output,
                     grad_input,
-                    grad_offset, 
-                    weight, 
-                    ctx.bufs_[0], 
+                    grad_offset,
+                    weight,
+                    ctx.bufs_[0],
                     weight.size(3),
-                    weight.size(2), 
-                    ctx.stride[1], 
+                    weight.size(2),
+                    ctx.stride[1],
                     ctx.stride[0],
-                    ctx.padding[1], 
-                    ctx.padding[0], 
+                    ctx.padding[1],
+                    ctx.padding[0],
                     ctx.dilation[1],
-                    ctx.dilation[0], 
-                    ctx.groups, 
+                    ctx.dilation[0],
+                    ctx.groups,
                     ctx.deformable_groups,
                     cur_im2col_step
                 )
@@ -107,22 +107,22 @@ class DeformConvFunction(Function):
             if ctx.needs_input_grad[2]:
                 grad_weight = torch.zeros_like(weight)
                 _C.deform_conv_backward_parameters(
-                    input, 
-                    offset, 
+                    input,
+                    offset,
                     grad_output,
-                    grad_weight, 
-                    ctx.bufs_[0], 
-                    ctx.bufs_[1], 
+                    grad_weight,
+                    ctx.bufs_[0],
+                    ctx.bufs_[1],
                     weight.size(3),
-                    weight.size(2), 
-                    ctx.stride[1], 
+                    weight.size(2),
+                    ctx.stride[1],
                     ctx.stride[0],
-                    ctx.padding[1], 
-                    ctx.padding[0], 
+                    ctx.padding[1],
+                    ctx.padding[0],
                     ctx.dilation[1],
-                    ctx.dilation[0], 
-                    ctx.groups, 
-                    ctx.deformable_groups, 
+                    ctx.dilation[0],
+                    ctx.groups,
+                    ctx.deformable_groups,
                     1,
                     cur_im2col_step
                 )
@@ -138,7 +138,7 @@ class DeformConvFunction(Function):
             pad = padding[d]
             kernel = dilation[d] * (weight.size(d + 2) - 1) + 1
             stride_ = stride[d]
-            output_size += ((in_size + (2 * pad) - kernel) // stride_ + 1, )
+            output_size += ((in_size + (2 * pad) - kernel) // stride_ + 1,)
         if not all(map(lambda s: s > 0, output_size)):
             raise ValueError(
                 "convolution input is too small (output would be {})".format(
@@ -150,17 +150,17 @@ class ModulatedDeformConvFunction(Function):
 
     @staticmethod
     def forward(
-        ctx,
-        input,
-        offset,
-        mask,
-        weight,
-        bias=None,
-        stride=1,
-        padding=0,
-        dilation=1,
-        groups=1,
-        deformable_groups=1
+            ctx,
+            input,
+            offset,
+            mask,
+            weight,
+            bias=None,
+            stride=1,
+            padding=0,
+            dilation=1,
+            groups=1,
+            deformable_groups=1
     ):
         ctx.stride = stride
         ctx.padding = padding
@@ -179,24 +179,24 @@ class ModulatedDeformConvFunction(Function):
             ModulatedDeformConvFunction._infer_shape(ctx, input, weight))
         ctx._bufs = [input.new_empty(0), input.new_empty(0)]
         _C.modulated_deform_conv_forward(
-            input, 
-            weight, 
-            bias, 
-            ctx._bufs[0], 
-            offset, 
-            mask, 
+            input,
+            weight,
+            bias,
+            ctx._bufs[0],
+            offset,
+            mask,
             output,
-            ctx._bufs[1], 
-            weight.shape[2], 
-            weight.shape[3], 
+            ctx._bufs[1],
+            weight.shape[2],
+            weight.shape[3],
             ctx.stride,
-            ctx.stride, 
-            ctx.padding, 
-            ctx.padding, 
-            ctx.dilation, 
+            ctx.stride,
+            ctx.padding,
+            ctx.padding,
             ctx.dilation,
-            ctx.groups, 
-            ctx.deformable_groups, 
+            ctx.dilation,
+            ctx.groups,
+            ctx.deformable_groups,
             ctx.with_bias
         )
         return output
@@ -213,29 +213,29 @@ class ModulatedDeformConvFunction(Function):
         grad_weight = torch.zeros_like(weight)
         grad_bias = torch.zeros_like(bias)
         _C.modulated_deform_conv_backward(
-            input, 
-            weight, 
-            bias, 
-            ctx._bufs[0], 
-            offset, 
-            mask, 
+            input,
+            weight,
+            bias,
+            ctx._bufs[0],
+            offset,
+            mask,
             ctx._bufs[1],
-            grad_input, 
-            grad_weight, 
-            grad_bias, 
-            grad_offset, 
+            grad_input,
+            grad_weight,
+            grad_bias,
+            grad_offset,
             grad_mask,
-            grad_output, 
-            weight.shape[2], 
-            weight.shape[3], 
+            grad_output,
+            weight.shape[2],
+            weight.shape[3],
             ctx.stride,
-            ctx.stride, 
-            ctx.padding, 
-            ctx.padding, 
-            ctx.dilation, 
+            ctx.stride,
+            ctx.padding,
+            ctx.padding,
             ctx.dilation,
-            ctx.groups, 
-            ctx.deformable_groups, 
+            ctx.dilation,
+            ctx.groups,
+            ctx.deformable_groups,
             ctx.with_bias
         )
         if not ctx.with_bias:

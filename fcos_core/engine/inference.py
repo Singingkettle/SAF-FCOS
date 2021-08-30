@@ -1,6 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 import logging
-import time
 import os
 
 import torch
@@ -8,11 +7,11 @@ from tqdm import tqdm
 
 from fcos_core.config import cfg
 from fcos_core.data.datasets.evaluation import evaluate
-from ..utils.comm import is_main_process, get_world_size
+from .bbox_aug import im_detect_bbox_aug
 from ..utils.comm import all_gather
+from ..utils.comm import is_main_process, get_world_size
 from ..utils.comm import synchronize
 from ..utils.timer import Timer, get_time_str
-from .bbox_aug import im_detect_bbox_aug
 
 
 def compute_on_dataset(model, data_loader, device, timer=None):

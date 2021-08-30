@@ -2,10 +2,9 @@
 import torch
 from torch.nn import functional as F
 
-from fcos_core.layers import smooth_l1_loss
 from fcos_core.modeling.matcher import Matcher
-from fcos_core.structures.boxlist_ops import boxlist_iou
 from fcos_core.modeling.utils import cat
+from fcos_core.structures.boxlist_ops import boxlist_iou
 
 
 def project_masks_on_boxes(segmentation_masks, proposals, discretization_size):

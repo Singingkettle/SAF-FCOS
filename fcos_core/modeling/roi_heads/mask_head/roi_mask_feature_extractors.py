@@ -2,11 +2,10 @@
 from torch import nn
 from torch.nn import functional as F
 
-from ..box_head.roi_box_feature_extractors import ResNet50Conv5ROIFeatureExtractor
 from fcos_core.modeling import registry
-from fcos_core.modeling.poolers import Pooler
 from fcos_core.modeling.make_layers import make_conv3x3
-
+from fcos_core.modeling.poolers import Pooler
+from ..box_head.roi_box_feature_extractors import ResNet50Conv5ROIFeatureExtractor
 
 registry.ROI_MASK_FEATURE_EXTRACTORS.register(
     "ResNet50Conv5ROIFeatureExtractor", ResNet50Conv5ROIFeatureExtractor

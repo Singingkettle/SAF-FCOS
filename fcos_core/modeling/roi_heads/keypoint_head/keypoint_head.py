@@ -1,9 +1,9 @@
 import torch
 
-from .roi_keypoint_feature_extractors import make_roi_keypoint_feature_extractor
-from .roi_keypoint_predictors import make_roi_keypoint_predictor
 from .inference import make_roi_keypoint_post_processor
 from .loss import make_roi_keypoint_loss_evaluator
+from .roi_keypoint_feature_extractors import make_roi_keypoint_feature_extractor
+from .roi_keypoint_predictors import make_roi_keypoint_predictor
 
 
 class ROIKeypointHead(torch.nn.Module):

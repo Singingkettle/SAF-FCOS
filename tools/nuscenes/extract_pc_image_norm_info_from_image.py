@@ -1,33 +1,14 @@
-#!/usr/bin/env python
-
-# Copyright (c) 2017-present, Facebook, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-##############################################################################
-
-# This file is copy from https://github.com/facebookresearch/Detectron/tree/master/tools
-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import argparse
 import json
 import os
 import sys
+
 import numpy as np
+from numpy import asarray
 from nuscenes.nuscenes import NuScenes
 from tqdm import tqdm
-from PIL import Image
-from numpy import asarray
 
 
 def parse_args():
@@ -105,11 +86,10 @@ def extract(data_dir, out_dir):
             else:
                 sys.exit("Something wrong with the generate json labels, Please check your code carefully.")
 
-    sets = ['train',]
-    all_annos = [train_annos,]
-    img_id = 0
+    sets = ['train', ]
+    all_annos = [train_annos, ]
     json_name = 'gt_fcos_coco_%s_%02d.json'
-    radius_list = [1, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+    radius_list = [1, 3, 5, 7, 9, 11]
     for radius in radius_list:
         for data_set, set_annos in zip(sets, all_annos):
             print('Starting %s, Radius %02d' % (data_set, radius))
@@ -121,8 +101,6 @@ def extract(data_dir, out_dir):
                 if len(annos) > 0:
                     num_item += 1
                     image = dict()
-                    image['id'] = img_id
-                    img_id += 1
 
                     image['width'] = 1600
                     image['height'] = 900
@@ -134,21 +112,23 @@ def extract(data_dir, out_dir):
                     pc_rec = nusc.get('sample_data', pointsensor_token)
 
                     image['file_name'] = sample_data['filename']
-                    image['pc_file_name'] = pc_rec['filename'].replace('samples', 'imagepc_%02d' % radius).replace('pcd', 'png')
+                    image['pc_file_name'] = pc_rec['filename'].replace('samples', 'imagepc_%02d' % radius).replace(
+                        'pcd', 'json')
+                    with open(os.path.join(data_dir, image['pc_file_name']), 'r') as f:
+                        image_info = json.load(f)
 
                     if num_item == 1:
-                        pc_img_data = Image.open(os.path.join(data_dir, image['pc_file_name']))
-                        pc_im_means, pc_im_stds = calculate_mean_std_of_img(pc_img_data)
+                        pc_im_means, pc_im_stds = np.asarray(image_info['mean']), np.asarray(image_info['std'])
                     else:
-                        pc_img_data = Image.open(os.path.join(data_dir, image['pc_file_name']))
-                        tmp_pc_im_means, tmp_pc_im_stds = calculate_mean_std_of_img(pc_img_data)
+                        tmp_pc_im_means, tmp_pc_im_stds = np.asarray(image_info['mean']), np.asarray(image_info['std'])
 
                         pc_im_means = (num_item - 1) / num_item * pc_im_means + tmp_pc_im_means / num_item
                         pc_im_stds = (num_item - 1) / num_item * pc_im_stds + tmp_pc_im_stds / num_item
 
             norm_param['pc_im_means'] = [item for item in pc_im_means]
             norm_param['pc_im_stds'] = [item for item in pc_im_stds]
-            with open(os.path.join(out_dir, 'norm', 'norm_param_' + json_name % (data_set, radius)), 'w') as outfile:
+            with open(os.path.join(out_dir, 'norm_info', 'norm_param_' + json_name % (data_set, radius)),
+                      'w') as outfile:
                 outfile.write(json.dumps(norm_param))
 
 

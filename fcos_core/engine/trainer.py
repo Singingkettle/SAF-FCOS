@@ -36,14 +36,14 @@ def reduce_loss_dict(loss_dict):
 
 
 def do_train(
-    model,
-    data_loader,
-    optimizer,
-    scheduler,
-    checkpointer,
-    device,
-    checkpoint_period,
-    arguments,
+        model,
+        data_loader,
+        optimizer,
+        scheduler,
+        checkpointer,
+        device,
+        checkpoint_period,
+        arguments,
 ):
     logger = logging.getLogger("fcos_core.trainer")
     logger.info("Start training")

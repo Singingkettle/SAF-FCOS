@@ -1,28 +1,10 @@
-#!/usr/bin/env python
-
-# Copyright (c) 2017-present, Facebook, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-##############################################################################
-
-# This file is copy from https://github.com/facebookresearch/Detectron/tree/master/tools
-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import argparse
 import json
 import os
 import sys
+
 import numpy as np
 from nuscenes.nuscenes import NuScenes
 from tqdm import tqdm
@@ -132,7 +114,8 @@ def merge_convert_and_detect(data_dir, out_dir):
                 if scene_description.find('Night') == -1:
                     # Load detection results
                     with open(
-                            os.path.join(data_dir, image['file_name'].replace('samples', 'fcos_nuscenes').replace('jpg', 'txt')),
+                            os.path.join(data_dir,
+                                         image['file_name'].replace('samples', 'fcos_nuscenes').replace('jpg', 'txt')),
                             'r') as f:
                         detection_list = f.readlines()
                         if len(detection_list) > 0:

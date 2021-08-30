@@ -1,5 +1,4 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
-import torch
 import torch.nn.functional as F
 from torch import nn
 
@@ -12,7 +11,7 @@ class FPN(nn.Module):
     """
 
     def __init__(
-        self, in_channels_list, out_channels, conv_block, top_blocks=None
+            self, in_channels_list, out_channels, conv_block, top_blocks=None
     ):
         """
         Arguments:
@@ -52,7 +51,7 @@ class FPN(nn.Module):
         results = []
         results.append(getattr(self, self.layer_blocks[-1])(last_inner))
         for feature, inner_block, layer_block in zip(
-            x[:-1][::-1], self.inner_blocks[:-1][::-1], self.layer_blocks[:-1][::-1]
+                x[:-1][::-1], self.inner_blocks[:-1][::-1], self.layer_blocks[:-1][::-1]
         ):
             if not inner_block:
                 continue
@@ -83,6 +82,7 @@ class LastLevelP6P7(nn.Module):
     """
     This module is used in RetinaNet to generate extra layers, P6 and P7.
     """
+
     def __init__(self, in_channels, out_channels):
         super(LastLevelP6P7, self).__init__()
         self.p6 = nn.Conv2d(in_channels, out_channels, 3, 2, 1)

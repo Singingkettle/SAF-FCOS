@@ -5,7 +5,6 @@ from collections import OrderedDict
 
 import torch
 
-from fcos_core.utils.model_serialization import load_state_dict
 from fcos_core.utils.registry import Registry
 
 
@@ -136,10 +135,7 @@ def _rename_weights_for_resnet(weights, stage_names):
 
 def _load_c2_pickled_weights(file_path):
     with open(file_path, "rb") as f:
-        if torch._six.PY3:
-            data = pickle.load(f, encoding="latin1")
-        else:
-            data = pickle.load(f)
+        data = pickle.load(f, encoding="latin1")
     if "blobs" in data:
         weights = data["blobs"]
     else:
@@ -161,7 +157,7 @@ def _rename_conv_weights_for_deformable_conv_layers(state_dict, cfg):
             if r is None:
                 continue
             for param in ["weight", "bias"]:
-                if old_key.find(param) is -1:
+                if old_key.find(param) == -1:
                     continue
                 new_key = old_key.replace(
                     "conv2.{}".format(param), "conv2.conv.{}".format(param)

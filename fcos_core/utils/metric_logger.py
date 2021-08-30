@@ -55,7 +55,7 @@ class MetricLogger(object):
         if attr in self.__dict__:
             return self.__dict__[attr]
         raise AttributeError("'{}' object has no attribute '{}'".format(
-                    type(self).__name__, attr))
+            type(self).__name__, attr))
 
     def __str__(self):
         loss_str = []
