@@ -1,0 +1,13 @@
+torch
+torchvision
+ninja
+yacs
+cython
+matplotlib
+tqdm
+opencv-python
+scikit-image
+PIL
+numpy
+pyquaternion
+shapely
