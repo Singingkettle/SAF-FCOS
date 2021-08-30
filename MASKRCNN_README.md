@@ -1,13 +1,16 @@
 # Faster R-CNN and Mask R-CNN in PyTorch 1.0
 
-This project aims at providing the necessary building blocks for easily
-creating detection and segmentation models using PyTorch 1.0.
+This project aims at providing the necessary building blocks for easily creating detection and segmentation models using
+PyTorch 1.0.
 
 ![alt text](demo/demo_e2e_mask_rcnn_X_101_32x8d_FPN_1x.png "from http://cocodataset.org/#explore?id=345434")
 
 ## Highlights
+
 - **PyTorch 1.0:** RPN, Faster R-CNN and Mask R-CNN implementations that matches or exceeds Detectron accuracies
-- **Very fast**: up to **2x** faster than [Detectron](https://github.com/facebookresearch/Detectron) and **30%** faster than [mmdetection](https://github.com/open-mmlab/mmdetection) during training. See [MODEL_ZOO.md](MODEL_ZOO.md) for more details.
+- **Very fast**: up to **2x** faster than [Detectron](https://github.com/facebookresearch/Detectron) and **30%** faster
+  than [mmdetection](https://github.com/open-mmlab/mmdetection) during training. See [MODEL_ZOO.md](MODEL_ZOO.md) for
+  more details.
 - **Memory efficient:** uses roughly 500MB less GPU memory than mmdetection during training
 - **Multi-GPU training and inference**
 - **Batched inference:** can perform inference using multiple images per batch per GPU
@@ -17,6 +20,7 @@ creating detection and segmentation models using PyTorch 1.0.
 ## Webcam and Jupyter notebook demo
 
 We provide a simple webcam demo that illustrates how you can use `maskrcnn_benchmark` for inference:
+
 ```bash
 cd demo
 # by default, it runs on the GPU
@@ -38,15 +42,15 @@ A notebook with the demo can be found in [demo/Mask_R-CNN_demo.ipynb](demo/Mask_
 
 Check [INSTALL.md](INSTALL.md) for installation instructions.
 
-
 ## Model Zoo and Baselines
 
-Pre-trained models, baselines and comparison with Detectron and mmdetection
-can be found in [MODEL_ZOO.md](MODEL_ZOO.md)
+Pre-trained models, baselines and comparison with Detectron and mmdetection can be found in [MODEL_ZOO.md](MODEL_ZOO.md)
 
 ## Inference in a few lines
-We provide a helper class to simplify writing inference pipelines using pre-trained models.
-Here is how we would do it. Run this from the `demo` folder:
+
+We provide a helper class to simplify writing inference pipelines using pre-trained models. Here is how we would do it.
+Run this from the `demo` folder:
+
 ```python
 from maskrcnn_benchmark.config import cfg
 from predictor import COCODemo
@@ -72,10 +76,11 @@ predictions = coco_demo.run_on_opencv_image(image)
 
 For the following examples to work, you need to first install `maskrcnn_benchmark`.
 
-You will also need to download the COCO dataset.
-We recommend to symlink the path to the coco dataset to `datasets/` as follows
+You will also need to download the COCO dataset. We recommend to symlink the path to the coco dataset to `datasets/` as
+follows
 
-We use `minival` and `valminusminival` sets from [Detectron](https://github.com/facebookresearch/Detectron/blob/master/detectron/datasets/data/README.md#coco-minival-annotations)
+We use `minival` and `valminusminival` sets
+from [Detectron](https://github.com/facebookresearch/Detectron/blob/master/detectron/datasets/data/README.md#coco-minival-annotations)
 
 ```bash
 # symlink the coco dataset
@@ -96,54 +101,54 @@ ln -s /path_to_VOCdevkit_dir datasets/voc
 ```
 
 P.S. `COCO_2017_train` = `COCO_2014_train` + `valminusminival` , `COCO_2017_val` = `minival`
-      
 
-You can also configure your own paths to the datasets.
-For that, all you need to do is to modify `maskrcnn_benchmark/config/paths_catalog.py` to
-point to the location where your dataset is stored.
-You can also create a new `paths_catalog.py` file which implements the same two classes,
-and pass it as a config argument `PATHS_CATALOG` during training.
+You can also configure your own paths to the datasets. For that, all you need to do is to
+modify `maskrcnn_benchmark/config/paths_catalog.py` to point to the location where your dataset is stored. You can also
+create a new `paths_catalog.py` file which implements the same two classes, and pass it as a config
+argument `PATHS_CATALOG` during training.
 
 ### Single GPU training
 
-Most of the configuration files that we provide assume that we are running on 8 GPUs.
-In order to be able to run it on fewer GPUs, there are a few possibilities:
+Most of the configuration files that we provide assume that we are running on 8 GPUs. In order to be able to run it on
+fewer GPUs, there are a few possibilities:
 
 **1. Run the following without modifications**
 
 ```bash
 python /path_to_maskrcnn_benchmark/tools/train_net.py --config-file "/path/to/config/file.yaml"
 ```
-This should work out of the box and is very similar to what we should do for multi-GPU training.
-But the drawback is that it will use much more GPU memory. The reason is that we set in the
-configuration files a global batch size that is divided over the number of GPUs. So if we only
-have a single GPU, this means that the batch size for that GPU will be 8x larger, which might lead
-to out-of-memory errors.
+
+This should work out of the box and is very similar to what we should do for multi-GPU training. But the drawback is
+that it will use much more GPU memory. The reason is that we set in the configuration files a global batch size that is
+divided over the number of GPUs. So if we only have a single GPU, this means that the batch size for that GPU will be 8x
+larger, which might lead to out-of-memory errors.
 
 If you have a lot of memory available, this is the easiest solution.
 
 **2. Modify the cfg parameters**
 
-If you experience out-of-memory errors, you can reduce the global batch size. But this means that
-you'll also need to change the learning rate, the number of iterations and the learning rate schedule.
+If you experience out-of-memory errors, you can reduce the global batch size. But this means that you'll also need to
+change the learning rate, the number of iterations and the learning rate schedule.
 
 Here is an example for Mask R-CNN R-50 FPN with the 1x schedule:
+
 ```bash
 python tools/train_net.py --config-file "configs/e2e_mask_rcnn_R_50_FPN_1x.yaml" SOLVER.IMS_PER_BATCH 2 SOLVER.BASE_LR 0.0025 SOLVER.MAX_ITER 720000 SOLVER.STEPS "(480000, 640000)" TEST.IMS_PER_BATCH 1
 ```
-This follows the [scheduling rules from Detectron.](https://github.com/facebookresearch/Detectron/blob/master/configs/getting_started/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml#L14-L30)
-Note that we have multiplied the number of iterations by 8x (as well as the learning rate schedules),
-and we have divided the learning rate by 8x.
 
-We also changed the batch size during testing, but that is generally not necessary because testing
-requires much less memory than training.
+This follows
+the [scheduling rules from Detectron.](https://github.com/facebookresearch/Detectron/blob/master/configs/getting_started/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml#L14-L30)
+Note that we have multiplied the number of iterations by 8x (as well as the learning rate schedules), and we have
+divided the learning rate by 8x.
 
+We also changed the batch size during testing, but that is generally not necessary because testing requires much less
+memory than training.
 
 ### Multi-GPU training
-We use internally `torch.distributed.launch` in order to launch
-multi-gpu training. This utility function from PyTorch spawns as many
-Python processes as the number of GPUs we want to use, and each Python
-process will only use a single GPU.
+
+We use internally `torch.distributed.launch` in order to launch multi-gpu training. This utility function from PyTorch
+spawns as many Python processes as the number of GPUs we want to use, and each Python process will only use a single
+GPU.
 
 ```bash
 export NGPUS=8
@@ -151,12 +156,14 @@ python -m torch.distributed.launch --nproc_per_node=$NGPUS /path_to_maskrcnn_ben
 ```
 
 ## Abstractions
+
 For more information on some of the main abstractions in our implementation, see [ABSTRACTIONS.md](ABSTRACTIONS.md).
 
 ## Adding your own dataset
 
-This implementation adds support for COCO-style datasets.
-But adding support for training on a new dataset can be done as follows:
+This implementation adds support for COCO-style datasets. But adding support for training on a new dataset can be done
+as follows:
+
 ```python
 from maskrcnn_benchmark.structures.bounding_box import BoxList
 
@@ -193,41 +200,52 @@ class MyDataset(object):
         # image from disk
         return {"height": img_height, "width": img_width}
 ```
+
 That's it. You can also add extra fields to the boxlist, such as segmentation masks
 (using `structures.segmentation_mask.SegmentationMask`), or even your own instance type.
 
-For a full example of how the `COCODataset` is implemented, check [`maskrcnn_benchmark/data/datasets/coco.py`](maskrcnn_benchmark/data/datasets/coco.py).
+For a full example of how the `COCODataset` is implemented,
+check [`maskrcnn_benchmark/data/datasets/coco.py`](maskrcnn_benchmark/data/datasets/coco.py).
 
 Once you have created your dataset, it needs to be added in a couple of places:
+
 - [`maskrcnn_benchmark/data/datasets/__init__.py`](maskrcnn_benchmark/data/datasets/__init__.py): add it to `__all__`
-- [`maskrcnn_benchmark/config/paths_catalog.py`](maskrcnn_benchmark/config/paths_catalog.py): `DatasetCatalog.DATASETS` and corresponding `if` clause in `DatasetCatalog.get()`
+- [`maskrcnn_benchmark/config/paths_catalog.py`](maskrcnn_benchmark/config/paths_catalog.py): `DatasetCatalog.DATASETS`
+  and corresponding `if` clause in `DatasetCatalog.get()`
 
 ### Testing
-While the aforementioned example should work for training, we leverage the
-cocoApi for computing the accuracies during testing. Thus, test datasets
-should currently follow the cocoApi for now.
 
-To enable your dataset for testing, add a corresponding if statement in [`maskrcnn_benchmark/data/datasets/evaluation/__init__.py`](maskrcnn_benchmark/data/datasets/evaluation/__init__.py):
+While the aforementioned example should work for training, we leverage the cocoApi for computing the accuracies during
+testing. Thus, test datasets should currently follow the cocoApi for now.
+
+To enable your dataset for testing, add a corresponding if statement
+in [`maskrcnn_benchmark/data/datasets/evaluation/__init__.py`](maskrcnn_benchmark/data/datasets/evaluation/__init__.py):
+
 ```python
 if isinstance(dataset, datasets.MyDataset):
         return coco_evaluation(**args)
 ```
 
 ## Finetuning from Detectron weights on custom datasets
-Create a script `tools/trim_detectron_model.py` like [here](https://gist.github.com/wangg12/aea194aa6ab6a4de088f14ee193fd968).
-You can decide which keys to be removed and which keys to be kept by modifying the script.
+
+Create a script `tools/trim_detectron_model.py`
+like [here](https://gist.github.com/wangg12/aea194aa6ab6a4de088f14ee193fd968). You can decide which keys to be removed
+and which keys to be kept by modifying the script.
 
 Then you can simply point the converted model path in the config file by changing `MODEL.WEIGHT`.
 
 For further information, please refer to [#15](https://github.com/facebookresearch/maskrcnn-benchmark/issues/15).
 
 ## Troubleshooting
+
 If you have issues running or compiling this code, we have compiled a list of common issues in
-[TROUBLESHOOTING.md](TROUBLESHOOTING.md). If your issue is not present there, please feel
-free to open a new issue.
+[TROUBLESHOOTING.md](TROUBLESHOOTING.md). If your issue is not present there, please feel free to open a new issue.
 
 ## Citations
-Please consider citing this project in your publications if it helps your research. The following is a BibTeX reference. The BibTeX entry requires the `url` LaTeX package.
+
+Please consider citing this project in your publications if it helps your research. The following is a BibTeX reference.
+The BibTeX entry requires the `url` LaTeX package.
+
 ```
 @misc{massa2018mrcnn,
 author = {Massa, Francisco and Girshick, Ross},
@@ -240,11 +258,8 @@ note = {Accessed: [Insert date here]}
 
 ## Projects using maskrcnn-benchmark
 
-- [RetinaMask: Learning to predict masks improves state-of-the-art single-shot detection for free](https://arxiv.org/abs/1901.03353). 
-  Cheng-Yang Fu, Mykhailo Shvets, and Alexander C. Berg.
-  Tech report, arXiv,1901.03353.
-
-
+- [RetinaMask: Learning to predict masks improves state-of-the-art single-shot detection for free](https://arxiv.org/abs/1901.03353)
+  . Cheng-Yang Fu, Mykhailo Shvets, and Alexander C. Berg. Tech report, arXiv,1901.03353.
 
 ## License
 
