@@ -82,7 +82,7 @@ python tools/nuscenes/extract_pc_image_norm_info_from_image.py --datadir ~/Data/
    ![detection2](./image/txt.png)
    The detection results are saved as '0, 1479.519, 611.043, 1598.754, 849.447'. The first column is category, and the
    last stands for position.  
-   For convenience, we supply our generated 2D txt files in cloud drive.  
+   For convenience, we supply our generated 2D txt files in cloud drive and in folder data/fcos.zip.  
    For users not in China, please download
    from [google drive](https://drive.google.com/file/d/12SXDFUWpTPUKaWTn8yuoG-_CHaXVVGB7/view?usp=sharing).  
    For users in China, please download from [baidu drive](https://pan.baidu.com/s/11NNYpmBbs5sSqSsFxl-z7Q).
