@@ -64,9 +64,7 @@ for f in *.tar; do tar -xvf "$f"; done
 3. Convert the radar pcd file as image:
 
 ```shell
-python tools/nuscenes/convert_radar_point_to_image.py --dataroot ~/Data/nuScenes --version v1.0-mini
-python tools/nuscenes/convert_radar_point_to_image.py --dataroot ~/Data/nuScenes --version v1.0-trainval
-python tools/nuscenes/convert_radar_point_to_image.py --dataroot ~/Data/nuScenes --version v1.0-test
+python tools/nuscenes/convert_radar_point.py --dataroot ~/Data/nuScenes
 ```
 
 4. Calculate the norm info of radar images:
