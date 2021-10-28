@@ -284,6 +284,25 @@ def run():
                 # Write progress to error so that it can be seen
                 print_progress(i, num_tokens, prefix=nuScenes_version, suffix='Done ', bar_length=40)
 
+    if not os.path.isfile(os.path.join(args.dataroot, args.version, args.filename)):
+        # Save to a .json file.
+        print("Combine the individual json files")
+        dest_path = os.path.join(args.dataroot, args.version)
+        if not os.path.exists(dest_path):
+            os.makedirs(dest_path)
+        with open(os.path.join(args.dataroot, args.version, args.filename), 'w') as fh:
+            reprojections = []
+            for token in sample_data_camera_tokens:
+                # Get the sample data and the sample corresponding to that sample data.
+                sd_rec = nusc.get('sample_data', token)
+                json_path = os.path.join(nusc.dataroot,
+                                         sd_rec['filename'].replace('samples', 'json').replace('jpg', 'json'))
+                with open(json_path, 'r') as f:
+                    reprojection_records = json.load(f)
+                reprojections.append(reprojection_records)
+            json.dump(reprojections, fh, sort_keys=True, indent=4)
+
+        print("Saved the 2D re-projections under {}".format(os.path.join(args.dataroot, args.version, args.filename)))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Export 2D annotations from reprojections to a .json file.',
@@ -305,3 +324,4 @@ if __name__ == '__main__':
     for index, nuScenes_version in enumerate(nuScenes_sets):
         nusc = NuScenes(dataroot=args.dataroot, version=nuScenes_version)
         run()
+
